@@ -58,6 +58,7 @@ Assign **USART3_RX** to **PD9** and **USART3_TX** to **PD8.**
 Next, we'll configure the GPIO for the user button to act as an external interrupt, initiating data transmission/reception upon activation. According to UM3115, the user button is mapped to PC13. Configure this in STM32CubeMX as follows:
 
 ![Alt text](images/image007.png)
+
 **1.4 Ethernet peripheral configuration**
 
 For Ethernet configuration, begin by enabling the peripheral in RMII mode, which is supported by our board and uses fewer pins (7 pins) compared to MII mode (16 pins). As with the USART3 configuration, ensure that the pins are correctly mapped to the MCU. Adhere to the pin configuration as detailed in the board schematic:
@@ -78,7 +79,7 @@ As previously mentioned, this example operates in interrupt mode, so we must con
 
 ![Alt text](images/image012.png)
      
-**1.6Clock configuration**
+**1.6 Clock configuration**
 
 For clock configuration, start by adjusting the RCC mode to select Crystal/Ceramic Resonator as the High-Speed Clock. Then, in the Clock Configuration tab, use HSI as the PLL1 Source Mux and PLLCLK as the System Clock Mux to achieve a frequency of 250MHz, as illustrated in the clock tree.
 
@@ -86,7 +87,7 @@ For clock configuration, start by adjusting the RCC mode to select Crystal/Ceram
 
 ![Alt text](images/image014.png)
 
-**1.7Linker Settings**
+**1.7 Linker Settings**
 
 Ethernet frames can be up to **1524 bytes** in size, or up to **9000 bytes** with Jumbo frames enabled. Therefore, it's essential to increase the heap size to accommodate **4 Rx Buffers**. The significance of this configuration will be explained later in the guide. Why 4 Rx Buffers? In the Ethernet configuration tab of STM32CubeMX, we find the following:
 
@@ -459,6 +460,7 @@ void HAL_ETH_RxCpltCallback(ETH_HandleTypeDef * heth)
 Finally, all that's left to do is build the project and test it. To do that, we need to open a terminal emulator and connect to the Serial COM port at the correct speed. After running our project and initializing all the necessary peripherals, we can attempt to send an Ethernet frame to the board. If successful, this will trigger the callback function, which will start the ping pong communication between the two boards.
 
 ![Alt text](images/image020.png)
+
 **PS:** This example does not handle memory management of received packets, it serves only as a mean to explain the programming process of ethernet to ease the setup when using middlewares
 
 # Debugging tips
